@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "930702663805",
+    "project_id": "grese-dev",
+    "storage_bucket": "grese-dev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930702663805:android:d79f241d3ea7662bb2d114",
+        "android_client_info": {
+          "package_name": "com.grese.greseandroid.grese"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930702663805-fjg34sc31u9pv6d99lqmr4aigrfaprrj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.grese.greseandroid.grese",
+            "certificate_hash": "6a124a5514558b17c1e55c1b515671965af1741d"
+          }
+        },
+        {
+          "client_id": "930702663805-fpdct38l0ntj733n939e8betkf2dkm0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9Hm9ZL8OkQ8QzynPcZyET0SFjGgI1Fsg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930702663805-fpdct38l0ntj733n939e8betkf2dkm0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:grese/GoogleSignInService.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -49,6 +56,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  User? _user;
 
   void _incrementCounter() {
     setState(() {
@@ -59,6 +67,75 @@ class _MyHomePageState extends State<MyHomePage> {
       // called again, and so nothing would appear to happen.
       _counter++;
     });
+  }
+
+  Future googleSignIn() async {
+    try {
+      final user = await GoogleSignInService.login();
+
+      var userAuth = await user?.authentication;
+
+      // Create a new credential
+      // final credential = GoogleSignInAuthentication(
+      //   accessToken: userAuth?.accessToken,
+      //   idToken: userAuth?.idToken,
+      // );
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: userAuth?.accessToken,
+        idToken: userAuth?.idToken,
+      );
+
+      // Once signed in, return the UserCredential
+      await FirebaseAuth.instance.signInWithCredential(credential);
+
+      setState(() {
+        _user = FirebaseAuth.instance.currentUser;
+      });
+
+      if (kDebugMode) {
+        print(user?.displayName);
+        print(user?.email);
+        print(user?.id);
+        print(user?.photoUrl);
+        print(userAuth?.accessToken);
+        print(userAuth?.idToken);
+        print(userAuth?.hashCode);
+      }
+    } catch (exception) {
+      if (kDebugMode) {
+        print(exception);
+      }
+    }
+  }
+
+  Future logout() async {
+    try {
+      await GoogleSignInService.logout();
+      FirebaseAuth.instance.signOut();
+      setState(() {
+        _user = null;
+      });
+    } catch (exception) {
+      if (kDebugMode) {
+        print(exception);
+      }
+    }
+  }
+
+  void autoLogin() {
+    if (FirebaseAuth.instance.currentUser != null) {
+      setState(() {
+        _user = FirebaseAuth.instance.currentUser;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    autoLogin();
+    super.initState();
   }
 
   @override
@@ -101,6 +178,33 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            CircleAvatar(
+              backgroundColor: Colors.white,
+              child: ClipRect(
+                child: Image.network(
+                  _user?.photoURL ??
+                      'https://fastly.picsum.photos/id/404/200/200.jpg?hmac=7TesL9jR4uM2T_rW-vLbBjqvfeR37MJKTYA4TV-giwo',
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Text(
+              _user?.displayName ?? '',
+            ),
+            Text(
+              _user?.email ?? '',
+            ),
+            Text(
+              _user?.uid ?? '',
+            ),
+            ElevatedButton(
+              onPressed: googleSignIn,
+              child: const Text('google sign in'),
+            ),
+            ElevatedButton(
+              onPressed: logout,
+              child: const Text('google sign out'),
             ),
           ],
         ),
