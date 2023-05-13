@@ -8,6 +8,5 @@ class MyListsScreen extends StatelessWidget {
     return const Center(
       child: Text('My lists Screen'),
     );
-    ;
   }
 }

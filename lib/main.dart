@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grese/GoogleSignInService.dart';
 import 'package:grese/screens/dashboard_screen.dart';
 
@@ -18,6 +17,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    /// WORKS on every screen EXCEPT the screen in which appBar is used
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   const SystemUiOverlayStyle(
+    //     statusBarColor: Colors.orangeAccent, // You can use this as well
+    //     statusBarIconBrightness:
+    //         Brightness.dark, // OR Vice Versa for ThemeMode.dark
+    //     statusBarBrightness:
+    //         Brightness.light, // OR Vice Versa for ThemeMode.dark
+    //   ),
+    // );
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -155,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // Invoke "debug painting" (press "p" in the console, choose the
           // "Toggle Debug Paint" action from the Flutter Inspector in Android
           // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
+          // to see the wire-frame for each widget.
           //
           // Column has various properties to control how it sizes itself and
           // how it positions its children. Here we use mainAxisAlignment to

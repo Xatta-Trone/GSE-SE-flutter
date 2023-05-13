@@ -78,6 +78,5 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         unselectedFontSize: 12.0,
       ),
     );
-    ;
   }
 }
