@@ -48,12 +48,24 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "Lists"),
-          BottomNavigationBarItem(icon: Icon(Icons.hdr_plus), label: "Add"),
-          BottomNavigationBarItem(icon: Icon(Icons.list_sharp), label: "My lists"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+        items: <BottomNavigationBarItem>[
+          const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          const BottomNavigationBarItem(icon: Icon(Icons.list), label: "Lists"),
+          BottomNavigationBarItem(
+            icon: Container(
+              color: Colors.amber,
+              margin: const EdgeInsets.only(top: 10.0),
+              child: const Icon(
+                Icons.add_circle_outline,
+                size: 30.0,
+              ),
+            ),
+            label: "",
+          ),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.list_sharp), label: "My lists"),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.amber[800],
