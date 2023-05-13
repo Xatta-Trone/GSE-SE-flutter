@@ -60,6 +60,10 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         onTap: (i) => {_onItemTapped(i, context)},
+        type: BottomNavigationBarType.fixed,
+        // removing font size grow animation
+        selectedFontSize: 12.0,
+        unselectedFontSize: 12.0,
       ),
     );
     ;

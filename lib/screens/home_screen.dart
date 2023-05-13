@@ -25,8 +25,16 @@ class _HomeScreenState extends State<HomeScreen> {
             //   title: Text('SliverAppBar'),
             //   background: FlutterLogo(),
             // ),
-            actions: [Text('data')],
-            leading: Text('Leading'),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(right: 5.0),
+                child: Icon(Icons.notifications),
+              ),
+            ],
+            title: Text(
+              'GRE SE',
+              textScaleFactor: 1.5,
+            ),
           ),
            const SliverAppBar(
             pinned: true,
