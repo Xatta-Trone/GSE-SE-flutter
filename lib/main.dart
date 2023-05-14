@@ -2,13 +2,32 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grese/GoogleSignInService.dart';
+import 'package:grese/providers/firebase_app_provider.dart';
+import 'package:grese/providers/shared_pref_provider.dart';
 import 'package:grese/screens/dashboard_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MyApp());
+  final sharedPreferences = await SharedPreferences.getInstance();
+  final firebaseApp = await Firebase.initializeApp();
+
+  // Than we setup preferred orientations,
+  // and only after it finished we run our app
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) {
+    return runApp(ProviderScope(
+      overrides: [
+        firebaseAppProvider.overrideWithValue(firebaseApp),
+        sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+      ],
+      child: const MyApp(),
+    ));
+  });
+ 
 }
 
 class MyApp extends StatelessWidget {

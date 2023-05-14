@@ -1,17 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileScreen extends StatefulWidget {
+// final counterProvider = StateProvider((ref) => 0);
+
+final counterProvider = StateProvider<int>((ref) {
+  return 0;
+});
+
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    return SafeArea(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('data'),
+        Consumer(builder: (context, ref, _) {
+          var data = ref.watch(counterProvider);
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Profile Screen'),
-    );
+          return Text(data.toString());
+        }),
+        ElevatedButton(
+          onPressed: () {
+            ref.read(counterProvider.notifier).state++;
+          },
+          child: const Text('increment'),
+        )
+      ],
+    ));
   }
 }
