@@ -10,7 +10,7 @@ class MyListsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var isDark = ref.watch(isDarkProvider);
-    var currentUser = ref.watch(currentUserProvider);
+    // var currentUser = ref.watch(currentUserProvider);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -22,7 +22,7 @@ class MyListsScreen extends ConsumerWidget {
           },
           child: const Text('Change state'),
         ),
-        Text(currentUser?.uid ?? 'asdf'),
+        // Text(currentUser?.uid ?? 'asdf'),
         ElevatedButton(
           onPressed: () async {
             // final user = await ref.read(authRepositoryProvider).login();

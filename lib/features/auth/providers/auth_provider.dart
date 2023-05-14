@@ -4,12 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 final currentUserProvider =
-    StateNotifierProvider<CurrentUserNotifier, User?>((ref) {
+    StateNotifierProvider<CurrentUserNotifier, AsyncValue<User?>>((ref) {
   return CurrentUserNotifier(ref);
 });
 
-class CurrentUserNotifier extends StateNotifier<User?> {
-  CurrentUserNotifier(this.ref) : super(null);
+class CurrentUserNotifier extends StateNotifier<AsyncValue<User?>> {
+  CurrentUserNotifier(this.ref) : super(const AsyncData(null));
   late Ref ref;
 
   static final _googleSignIn = GoogleSignIn(
@@ -21,6 +21,7 @@ class CurrentUserNotifier extends StateNotifier<User?> {
   );
 
   Future<void> login() async {
+    state = const AsyncValue.loading();
     GoogleSignInAccount? user = await _googleSignIn.signIn();
     var userAuth = await user?.authentication;
 
@@ -30,10 +31,14 @@ class CurrentUserNotifier extends StateNotifier<User?> {
       idToken: userAuth?.idToken,
     );
 
-    // Once signed in, return the UserCredential
-    await FirebaseAuth.instance.signInWithCredential(credential);
-
-    state = FirebaseAuth.instance.currentUser;
+    try {
+      // Once signed in, return the UserCredential
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      // throw Exception("custom exception");
+      state = AsyncValue.data(FirebaseAuth.instance.currentUser);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
 
     if (kDebugMode) {
       print(state);
@@ -43,6 +48,6 @@ class CurrentUserNotifier extends StateNotifier<User?> {
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
     await _googleSignIn.signOut();
-    state = null;
+    state = const AsyncValue.data(null);
   }
 }
