@@ -1,65 +1,70 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:grese/constants/keys.dart';
+import 'package:grese/features/auth/model/LoginResponse.dart';
+import 'package:grese/providers/shared_pref_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthRepositoryInterface {
-  Future<User?> login();
-  Future<GoogleSignInAccount?> logout();
-  User? currentUser();
+  void saveToken(String token);
+  void saveUser(UserModel user);
+  void saveLoginResponse(LoginResponse loginResponse);
+  void deleteUser();
+  void deleteToken();
+  void deleteLoginResponse();
+  LoginResponse? initUserData();
 }
 
 class AuthRepository implements AuthRepositoryInterface {
-  static final _googleSignIn = GoogleSignIn(
-    // clientId:
-    //     '930702663805-fjg34sc31u9pv6d99lqmr4aigrfaprrj.apps.googleusercontent.com',
-    // serverClientId:
-    //     '930702663805-fjg34sc31u9pv6d99lqmr4aigrfaprrj.apps.googleusercontent.com',
-    scopes: <String>[
-      'email',
-      'profile',
-      "https://www.googleapis.com/auth/userinfo.profile"
-    ],
-  );
+  AuthRepository(this.sf) : super();
 
-  User? signedUser;
+  late SharedPreferences sf;
 
   @override
-  User? currentUser() {
-    return FirebaseAuth.instance.currentUser;
+  void deleteToken() {
+    sf.remove(userTokenKey);
   }
 
   @override
-  Future<User?> login() async {
-    GoogleSignInAccount? user = await _googleSignIn.signIn();
-    var userAuth = await user?.authentication;
-
-    // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: userAuth?.accessToken,
-      idToken: userAuth?.idToken,
-    );
-
-    // Once signed in, return the UserCredential
-    await FirebaseAuth.instance.signInWithCredential(credential);
-
-    signedUser = FirebaseAuth.instance.currentUser;
-
-    if (kDebugMode) {
-      print(signedUser.toString());
-    }
-
-    return signedUser;
+  void deleteUser() {
+    sf.remove(userModelKey);
   }
 
   @override
-  Future<GoogleSignInAccount?> logout() {
-    FirebaseAuth.instance.signOut();
-    signedUser = null;
-    return _googleSignIn.signOut();
+  LoginResponse? initUserData() {
+    var rawData = sf.getString(userResponseKey);
+    return rawData != null
+        ? LoginResponse.fromJson(json.decode(rawData))
+        : null;
+  }
+
+  @override
+  void saveToken(String token) {
+    sf.setString(userTokenKey, token);
+  }
+
+  @override
+  void saveUser(UserModel user) {
+    sf.setString(userModelKey, json.encode(user));
+  }
+
+  @override
+  void saveLoginResponse(LoginResponse loginResponse) {
+    saveUser(loginResponse.user);
+    saveToken(loginResponse.token);
+    sf.setString(userResponseKey, json.encode(loginResponse));
+  }
+
+  @override
+  void deleteLoginResponse() {
+    sf.remove(userResponseKey);
+    deleteToken();
+    deleteUser();
   }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  return AuthRepository();
+  var sf = ref.watch(sharedPreferencesProvider);
+  return AuthRepository(sf);
 });

@@ -39,10 +39,6 @@ class AuthInterceptor extends Interceptor {
   // You can also perform some actions in the response or onError.
   @override
   void onResponse(response, ResponseInterceptorHandler handler) {
-    if (kDebugMode) {
-      print("err response=================");
-      print(response);
-    }
     return handler.next(response);
   }
 

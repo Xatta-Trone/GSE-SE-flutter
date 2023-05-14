@@ -1,20 +1,24 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grese/features/auth/providers/auth_provider.dart';
+import 'package:grese/features/auth/providers/token_provider.dart';
 import 'package:grese/screens/global_list_screen.dart';
 import 'package:grese/screens/home_screen.dart';
 import 'package:grese/screens/my_lists_screen.dart';
 import 'package:grese/screens/profile_screen.dart';
 import 'package:grese/screens/search_screen.dart';
 
-class DashBoardScreen extends StatefulWidget {
+class DashBoardScreen extends ConsumerStatefulWidget {
   const DashBoardScreen({super.key});
 
   @override
-  State<DashBoardScreen> createState() => _DashBoardScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _DashBoardScreenState();
 }
 
-class _DashBoardScreenState extends State<DashBoardScreen> {
+class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -40,6 +44,8 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
