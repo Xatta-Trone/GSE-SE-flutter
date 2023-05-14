@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grese/features/auth/model/LoginResponse.dart';
+import 'package:grese/features/auth/model/profile_response.dart';
 import 'package:grese/features/auth/providers/token_provider.dart';
 import 'package:grese/features/auth/repository/auth_repository.dart';
 import 'package:grese/providers/dio/dio_provider.dart';
@@ -69,6 +70,21 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
         print(err);
       }
       state = AsyncValue.error(err, StackTrace.current);
+    }
+  }
+
+  Future me() async {
+    try {
+      var res = await _dio.get("/me");
+
+      if (kDebugMode) {
+        print(res.data);
+        print(ProfileResponse.fromJson(res.data));
+      }
+    } catch (err) {
+      if (kDebugMode) {
+        print(err);
+      }
     }
   }
 

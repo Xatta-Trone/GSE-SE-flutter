@@ -1,8 +1,5 @@
-// To parse this JSON data, do
-//
-//     final loginResponse = loginResponseFromJson(jsonString);
-
-import 'dart:convert';
+// ignore: file_names
+import 'dart:convert' show json;
 
 class LoginResponse {
   String token;

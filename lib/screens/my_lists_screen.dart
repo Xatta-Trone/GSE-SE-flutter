@@ -39,6 +39,14 @@ class MyListsScreen extends ConsumerWidget {
             // ref.read(currentUserProvider.notifier).update((state) => null);
           },
           child: const Text('Logout'),
+        ),
+        ElevatedButton(
+          onPressed: () async {
+            // await ref.read(authRepositoryProvider).logout();
+            await ref.read(currentUserProvider.notifier).me();
+            // ref.read(currentUserProvider.notifier).update((state) => null);
+          },
+          child: const Text('Me'),
         )
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grese/features/auth/providers/token_provider.dart';
 
 class AuthInterceptor extends Interceptor {
   AuthInterceptor(this.ref);
@@ -25,7 +26,7 @@ class AuthInterceptor extends Interceptor {
     //     ? authController.token.value.toString()
     //     : null;
     // ignore: prefer_typing_uninitialized_variables
-    var token;
+    var token = ref.read(tokenProvider);
 
     if (token != null) {
       options.headers.addAll({'Authorization': "Bearer $token"});
