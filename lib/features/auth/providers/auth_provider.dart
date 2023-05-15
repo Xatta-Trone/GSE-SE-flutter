@@ -37,16 +37,16 @@ class CurrentUserNotifier extends StateNotifier<AsyncValue<UserModel?>> {
     var userAuth = await user?.authentication;
 
     // Create a new credential
-    final credential = GoogleAuthProvider.credential(
-      accessToken: userAuth?.accessToken,
-      idToken: userAuth?.idToken,
-    );
+    // final credential = GoogleAuthProvider.credential(
+    //   accessToken: userAuth?.accessToken,
+    //   idToken: userAuth?.idToken,
+    // );
 
     try {
       // Once signed in, return the UserCredential
       // throw Exception("custom exception");
       // state = AsyncValue.data(FirebaseAuth.instance.currentUser);
-      await FirebaseAuth.instance.signInWithCredential(credential);
+      // await FirebaseAuth.instance.signInWithCredential(credential);
 
       var res = await _dio.post("/login", data: {
         'token': userAuth?.idToken,

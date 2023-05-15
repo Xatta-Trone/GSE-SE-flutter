@@ -16,6 +16,11 @@ abstract class AuthRepositoryInterface {
   LoginResponse? initUserData();
 }
 
+final authRepositoryProvider = Provider<AuthRepository>((ref) {
+  var sf = ref.watch(sharedPreferencesProvider);
+  return AuthRepository(sf);
+});
+
 class AuthRepository implements AuthRepositoryInterface {
   AuthRepository(this.sf) : super();
 
@@ -64,7 +69,3 @@ class AuthRepository implements AuthRepositoryInterface {
   }
 }
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) {
-  var sf = ref.watch(sharedPreferencesProvider);
-  return AuthRepository(sf);
-});

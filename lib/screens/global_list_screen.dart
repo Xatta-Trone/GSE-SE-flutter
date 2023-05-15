@@ -1,40 +1,68 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/features/auth/model/LoginResponse.dart';
-import 'package:grese/features/auth/providers/auth_provider.dart';
-import 'package:grese/features/auth/providers/token_provider.dart';
+import 'package:grese/features/lists/model/list_response_model.dart';
+import 'package:grese/features/lists/providers/public_lists_provider.dart';
 
-class GlobalListScreen extends ConsumerWidget {
+class GlobalListScreen extends ConsumerStatefulWidget {
   const GlobalListScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var currentUser = ref.watch(currentUserProvider);
-    var token = ref.watch(tokenProvider);
+  ConsumerState<GlobalListScreen> createState() => _GlobalListScreenState();
+}
 
-    return currentUser.when(error: (Object error, StackTrace stackTrace) {
-      return Center(
-        child: Text(
-          error.toString(),
-        ),
-      );
-    }, data: (UserModel? currentUser) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(currentUser?.name ?? 'Not logged in'),
-          Text(currentUser?.email ?? 'email'),
-          Text(currentUser?.username ?? 'email'),
-          Text(currentUser?.createdAt.toIso8601String() ?? 'email'),
-          Text(token ?? 'token'),
-        ],
-      );
-    }, loading: () {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    });
+class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future(() => ref.read(publicListProvider.notifier).getListItems());
+  }
 
+  @override
+  Widget build(BuildContext context) {
+    var listItems = ref.watch(publicListProvider);
+
+    return Scaffold(
+      floatingActionButton: ElevatedButton(
+        onPressed: () => ref.read(publicListProvider.notifier).getNextPageItems(),
+        child: const Text('data'),
+      ),
+      body: SafeArea(
+          child: listItems.when(data: (List<ListModel> data) {
+        // check no data
+        if (data.isEmpty) {
+          return const Center(
+            child: Text("No data found"),
+          );
+        }
+
+        return ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, i) {
+              return Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(5.0),
+                  ),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                margin: const EdgeInsets.only(bottom: 5.0, left: 10.0, right: 10.0, top: 5.0),
+                child: Text(
+                  data[i].name,
+                ),
+              );
+            });
+      }, error: (Object error, StackTrace stackTrace) {
+        return Center(
+          child: Text(
+            error.toString(),
+          ),
+        );
+      }, loading: () {
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      })),
+    );
   }
 }
