@@ -23,8 +23,13 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
     state = const AsyncValue.loading();
 
     try {
+      // set default query value
+      _listMetaModel.page = 1;
+      _listMetaModel.order = 'asc';
+      _listMetaModel.query = '';
       _publicListsRepository.getLists(_listMetaModel).then((ListsResponse response) {
-        updateDate(response.data);
+        clearData();
+        updateData(response.data);
       });
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -36,22 +41,31 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
       // set the next page
       _listMetaModel.page++;
       _publicListsRepository.getLists(_listMetaModel).then((ListsResponse response) {
-        updateDate(response.data);
+        updateData(response.data);
       });
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
     }
   }
 
-  void updateDate(List<ListModel> items) {
+  void updateData(List<ListModel> items) {
     if (items.isEmpty) {
       state = AsyncValue.data(_items);
     } else {
       state = AsyncValue.data(_items..addAll(items));
     }
   }
+
+  void clearData() {
+    _items.clear();
+    state = AsyncValue.data(_items);
+  }
 }
 
 final listMetaStateProvider = StateProvider<ListMetaModel>((ref) {
   return ListMetaModel(count: 0, id: 0, query: "", orderBy: "id", order: "asc", page: 1, perPage: 2);
+});
+
+final initStateProvider = StateProvider<bool>((ref) {
+  return false;
 });
