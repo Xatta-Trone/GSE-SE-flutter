@@ -4,51 +4,72 @@ import 'package:grese/features/auth/providers/auth_provider.dart';
 import 'package:grese/features/auth/repository/auth_repository.dart';
 import 'package:grese/services/shared_pref_service.dart';
 
-class MyListsScreen extends ConsumerWidget {
+class MyListsScreen extends StatefulWidget {
   const MyListsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var isDark = ref.watch(isDarkProvider);
+  State<MyListsScreen> createState() => _MyListsScreenState();
+}
+
+class _MyListsScreenState extends State<MyListsScreen> with TickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    // _tabController.animateTo(2);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // var currentUser = ref.watch(currentUserProvider);
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Column(
       children: [
-        Text(isDark.toString()),
-        ElevatedButton(
-          onPressed: () {
-            ref.read(isDarkProvider.notifier).toggleDarkMode(isDark: !isDark);
-          },
-          child: const Text('Change state'),
+          TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(icon: Icon(Icons.directions_car)),
+              Tab(icon: Icon(Icons.directions_transit)),
+            ],
         ),
-        // Text(currentUser?.uid ?? 'asdf'),
-        ElevatedButton(
-          onPressed: () async {
-            // final user = await ref.read(authRepositoryProvider).login();
-            await ref.read(currentUserProvider.notifier).login();
-
-            // ref.read(currentUserProvider.notifier).update((state) => user);
-          },
-          child: const Text('Login'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            // await ref.read(authRepositoryProvider).logout();
-            await ref.read(currentUserProvider.notifier).logout();
-            // ref.read(currentUserProvider.notifier).update((state) => null);
-          },
-          child: const Text('Logout'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            // await ref.read(authRepositoryProvider).logout();
-            await ref.read(currentUserProvider.notifier).me();
-            // ref.read(currentUserProvider.notifier).update((state) => null);
-          },
-          child: const Text('Me'),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                Icon(Icons.directions_car),
+                Icon(Icons.directions_transit),
+              ],
+            ),
         )
       ],
+      ),
     );
+
+    // SafeArea(
+    //   child: DefaultTabController(
+    //     length: 2,
+    //     child: Scaffold(
+    //       appBar: AppBar(
+    //         elevation: 1.0,
+    //         bottom: const TabBar(
+    //           tabs: [
+    //             Tab(icon: Icon(Icons.directions_car)),
+    //             Tab(icon: Icon(Icons.directions_transit)),
+    //           ],
+    //         ),
+    //         title: const Text('Tabs Demo'),
+    //       ),
+    //       body: const TabBarView(
+    //         children: [
+    //           Icon(Icons.directions_car),
+    //           Icon(Icons.directions_transit),
+    //         ],
+    //       ),
+    //     ),
+    //   ),
+    // );
   }
 }

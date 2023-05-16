@@ -68,7 +68,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.teal,
       ),
       home: token == null ? const LoginScreen() : const DashBoardScreen(),
     );

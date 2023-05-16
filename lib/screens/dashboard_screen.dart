@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/features/auth/providers/auth_provider.dart';
-import 'package:grese/features/auth/providers/token_provider.dart';
 import 'package:grese/screens/global_list_screen.dart';
 import 'package:grese/screens/home_screen.dart';
+import 'package:grese/screens/lists_screen.dart';
 import 'package:grese/screens/my_lists_screen.dart';
 import 'package:grese/screens/profile_screen.dart';
 import 'package:grese/screens/search_screen.dart';
@@ -23,7 +22,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeScreen(),
-    GlobalListScreen(),
+    ListsScreen(),
     SearchScreen(),
     MyListsScreen(),
     ProfileScreen(),

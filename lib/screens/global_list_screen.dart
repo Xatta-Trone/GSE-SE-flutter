@@ -84,6 +84,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                           Icon(
                             Icons.view_day_outlined,
                             color: Colors.grey.shade700,
+                            size: 20.0,
                           ),
                           const Spacer(),
                           Text(
@@ -111,6 +112,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                           Icon(
                             Icons.account_circle_outlined,
                             color: Colors.grey.shade700,
+                            size: 18.0,
                           ),
                           const SizedBox(
                             width: 2.0,
