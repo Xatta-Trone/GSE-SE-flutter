@@ -13,12 +13,12 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
   PublicListNotifier(this._ref, this._publicListsRepository, this._listMetaModel)
       : super(AsyncData(List<ListModel>.empty(growable: true)));
 
-  late Ref _ref;
+  late final Ref _ref;
   late final PublicListsRepository _publicListsRepository;
   late final ListMetaModel _listMetaModel;
   final List<ListModel> _items = [];
 
-  void getListItems() {
+  void getListItems({String query = ''}) {
     // set the loading
     state = const AsyncValue.loading();
 
@@ -26,10 +26,15 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
       // set default query value
       _listMetaModel.page = 1;
       _listMetaModel.order = 'asc';
-      _listMetaModel.query = '';
+      _listMetaModel.query = query;
+      _ref.read(hasMOreStateProvider.notifier).state = true;
       _publicListsRepository.getLists(_listMetaModel).then((ListsResponse response) {
         clearData();
         updateData(response.data);
+        // check if this is the end of list 
+        if (response.data.length < _listMetaModel.perPage) {
+          _ref.read(hasMOreStateProvider.notifier).state = false;
+        }
       });
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -38,10 +43,18 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 
   void getNextPageItems() {
     try {
+      if (_ref.read(hasMOreStateProvider.notifier).state == false) {
+        return;
+      }
       // set the next page
       _listMetaModel.page++;
       _publicListsRepository.getLists(_listMetaModel).then((ListsResponse response) {
-        updateData(response.data);
+        if (response.data.isEmpty) {
+          _ref.read(hasMOreStateProvider.notifier).state = false;
+        } else {
+          _ref.read(hasMOreStateProvider.notifier).state = true;
+          updateData(response.data);
+        }
       });
     } catch (e) {
       state = AsyncValue.error(e, StackTrace.current);
@@ -63,9 +76,13 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 }
 
 final listMetaStateProvider = StateProvider<ListMetaModel>((ref) {
-  return ListMetaModel(count: 0, id: 0, query: "", orderBy: "id", order: "asc", page: 1, perPage: 2);
+  return ListMetaModel(count: 0, id: 0, query: "", orderBy: "id", order: "asc", page: 1, perPage: 5);
 });
 
 final initStateProvider = StateProvider<bool>((ref) {
   return false;
+});
+
+final hasMOreStateProvider = StateProvider<bool>((ref) {
+  return true;
 });

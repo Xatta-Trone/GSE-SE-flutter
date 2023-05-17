@@ -30,12 +30,14 @@ class _ListsScreenState extends State<ListsScreen> with TickerProviderStateMixin
   Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TabBar(
+            labelColor: Theme.of(context).primaryColor,
             controller: _tabController,
             tabs: const [
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_transit)),
+              Tab(icon: Icon(Icons.view_day_outlined)),
+              Tab(icon: Icon(Icons.folder_outlined)),
             ],
           ),
           Expanded(

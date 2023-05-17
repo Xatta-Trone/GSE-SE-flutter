@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -12,12 +14,17 @@ import 'package:grese/providers/firebase_app_provider.dart';
 import 'package:grese/providers/shared_pref_provider.dart';
 import 'package:grese/screens/dashboard_screen.dart';
 import 'package:grese/screens/login_screen.dart';
+import 'package:json_theme/json_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final sharedPreferences = await SharedPreferences.getInstance();
   final firebaseApp = await Firebase.initializeApp();
+
+  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
+  final themeJson = jsonDecode(themeStr);
+  final theme = ThemeDecoder.decodeThemeData(themeJson)!;
 
   // Than we setup preferred orientations,
   // and only after it finished we run our app
@@ -28,20 +35,21 @@ void main() async {
         firebaseAppProvider.overrideWithValue(firebaseApp),
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      child: const MyApp(),
+      child: MyApp(theme: theme),
     ));
   });
 }
 
 class MyApp extends ConsumerStatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, required this.theme});
+  final ThemeData theme;
+
 
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-  // This widget is the root of your application.
 
 // try to autologin user data
   @override
@@ -67,9 +75,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
+      theme: widget.theme,
       home: token == null ? const LoginScreen() : const DashBoardScreen(),
     );
   }
