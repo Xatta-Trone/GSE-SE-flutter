@@ -122,7 +122,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                     itemCount: data.length + 1,
                     itemBuilder: (context, i) {
                       if (i == data.length) {
-                        if (ref.watch(hasMOreStateProvider.notifier).state == true) {
+                        if (ref.watch(hasMOreStateProvider) == true) {
                           return const Center(child:  CircularProgressIndicator());
                         } else {
                           return const Padding(
