@@ -3,19 +3,18 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/features/lists/model/list_response_model.dart';
-import 'package:grese/features/lists/providers/public_lists_provider.dart';
-import 'package:grese/mixins/debonce_mixin.dart';
+import 'package:grese/features/folders/model/folder_response_model.dart';
+import 'package:grese/features/folders/providers/public_folders_provider.dart';
 import 'package:intl/intl.dart';
 
-class GlobalListScreen extends ConsumerStatefulWidget {
-  const GlobalListScreen({super.key});
+class GlobalFolderScreen extends ConsumerStatefulWidget {
+  const GlobalFolderScreen({super.key});
 
   @override
-  ConsumerState<GlobalListScreen> createState() => _GlobalListScreenState();
+  ConsumerState<GlobalFolderScreen> createState() => _GlobalFolderScreenState();
 }
 
-class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
+class _GlobalFolderScreenState extends ConsumerState<GlobalFolderScreen> {
   bool isLoaded = false;
   final scrollController = ScrollController();
 
@@ -35,13 +34,13 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
   @override
   void initState() {
     super.initState();
-    if (ref.read(initStateProvider.notifier).state == false) {
+    if (ref.read(publicFolderInitStateProvider.notifier).state == false) {
       if (kDebugMode) {
         print('init state called');
       }
       Future(() {
-        ref.read(publicListProvider.notifier).getListItems();
-        ref.read(initStateProvider.notifier).state = true;
+        ref.read(publicFolderProvider.notifier).getListItems();
+        ref.read(publicFolderInitStateProvider.notifier).state = true;
       });
     }
     if (kDebugMode) {
@@ -53,7 +52,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
         if (kDebugMode) {
           print('reached end');
         }
-        ref.read(publicListProvider.notifier).getNextPageItems();
+        ref.read(publicFolderProvider.notifier).getNextPageItems();
       }
     });
   }
@@ -65,11 +64,11 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var listItems = ref.watch(publicListProvider);
+    var listItems = ref.watch(publicFolderProvider);
 
     return Scaffold(
       floatingActionButton: ElevatedButton(
-        onPressed: () => ref.read(publicListProvider.notifier).getNextPageItems(),
+        onPressed: () => ref.read(publicFolderProvider.notifier).getNextPageItems(),
         child: const Text('data'),
       ),
       body: SafeArea(
@@ -77,7 +76,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: RefreshIndicator(
           onRefresh: () {
-            return Future(() => ref.read(publicListProvider.notifier).getListItems());
+            return Future(() => ref.read(publicFolderProvider.notifier).getListItems());
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +84,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
-                  "Lists",
+                  "Folders",
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
@@ -101,7 +100,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                     if (kDebugMode) {
                       print(value);
                     }
-                    handleDebounce(() => ref.read(publicListProvider.notifier).getListItems(query: value));
+                    handleDebounce(() => ref.read(publicFolderProvider.notifier).getListItems(query: value));
                   }
                 },
               ),
@@ -109,7 +108,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                 height: 10.0,
               ),
               Expanded(
-                  child: listItems.when(data: (List<ListModel> data) {
+                  child: listItems.when(data: (List<PublicFolderModel> data) {
                 // check no data
                 if (data.isEmpty) {
                   return const Center(
@@ -122,7 +121,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                     itemCount: data.length + 1,
                     itemBuilder: (context, i) {
                       if (i == data.length) {
-                        if (ref.watch(hasMOreStateProvider) == true) {
+                        if (ref.watch(publicFoldersHasMoreStateProvider) == true) {
                           return const Center(child: CircularProgressIndicator());
                         } else {
                           return const Padding(
@@ -136,8 +135,8 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                           );
                         }
                       }
-                      return ListCardWidget(
-                        listModel: data[i],
+                      return ListFolderWidget(
+                        model: data[i],
                       );
                     });
               }, error: (Object error, StackTrace stackTrace) {
@@ -159,9 +158,9 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
   }
 }
 
-class ListCardWidget extends StatelessWidget {
-  const ListCardWidget({super.key, required this.listModel});
-  final ListModel listModel;
+class ListFolderWidget extends StatelessWidget {
+  const ListFolderWidget({super.key, required this.model});
+  final PublicFolderModel model;
 
   @override
   Widget build(BuildContext context) {
@@ -191,13 +190,13 @@ class ListCardWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Icon(
-                Icons.view_day_outlined,
+                Icons.folder_outlined,
                 color: Colors.grey.shade700,
                 size: 20.0,
               ),
               const Spacer(),
               Text(
-                "${listModel.wordCount} terms",
+                "${model.listCount} lists",
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey.shade700),
               )
             ],
@@ -206,7 +205,7 @@ class ListCardWidget extends StatelessWidget {
             height: 8.0,
           ),
           Text(
-            "${listModel.name} asdf ${listModel.name} very long text",
+            "${model.name} asdf ${model.name} very long text",
             style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 2,
             softWrap: true,
@@ -228,7 +227,7 @@ class ListCardWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  "${listModel.user.username} asdf very long user name asdf asdf asdf",
+                  "${model.user.username} asdf very long user name asdf asdf asdf",
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey.shade700),
                   maxLines: 1,
                   softWrap: true,
@@ -237,7 +236,7 @@ class ListCardWidget extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                DateFormat('MMMM yyyy').format(listModel.cratedAt),
+                DateFormat('MMMM yyyy').format(model.cratedAt),
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey.shade700),
               )
             ],

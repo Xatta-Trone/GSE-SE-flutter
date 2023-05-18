@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:grese/screens/global_folder/global_folder_screen.dart';
 import 'package:grese/screens/global_list_screen.dart';
 
 class ListsScreen extends StatefulWidget {
@@ -45,7 +44,7 @@ class _ListsScreenState extends State<ListsScreen> with TickerProviderStateMixin
               controller: _tabController,
               children: const [
                 GlobalListScreen(),
-                GlobalListScreen(),
+                GlobalFolderScreen(),
               ],
             ),
           )
