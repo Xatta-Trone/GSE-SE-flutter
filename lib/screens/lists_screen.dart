@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grese/screens/global_folder/global_folder_screen.dart';
-import 'package:grese/screens/global_list_screen.dart';
+import 'package:grese/screens/global_lists/global_list_screen.dart';
 
 class ListsScreen extends StatefulWidget {
   const ListsScreen({super.key});

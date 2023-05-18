@@ -85,7 +85,7 @@ class _GlobalFolderScreenState extends ConsumerState<GlobalFolderScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   "Folders",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               TextFormField(

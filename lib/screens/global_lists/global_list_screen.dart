@@ -86,7 +86,7 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                 padding: const EdgeInsets.symmetric(vertical: 10.0),
                 child: Text(
                   "Lists",
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
               TextFormField(

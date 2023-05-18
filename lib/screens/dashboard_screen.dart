@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/screens/global_list_screen.dart';
+import 'package:grese/screens/global_lists/global_list_screen.dart';
 import 'package:grese/screens/home_screen.dart';
 import 'package:grese/screens/lists_screen.dart';
 import 'package:grese/screens/my_lists_screen.dart';
