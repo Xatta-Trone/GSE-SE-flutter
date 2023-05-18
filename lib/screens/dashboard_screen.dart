@@ -1,8 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/screens/global_lists/global_list_screen.dart';
 import 'package:grese/screens/home_screen.dart';
 import 'package:grese/screens/lists_screen.dart';
 import 'package:grese/screens/my_lists_screen.dart';
@@ -33,8 +33,35 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       return showDialog(
           context: context,
           builder: (context) {
-            return const Dialog(
-              child: Text('data'),
+            return Dialog(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      if (kDebugMode) {
+                        print('Create word set clicked');
+                      }
+                    },
+                    child: const ListTile(
+                      leading: Icon(Icons.view_day_outlined),
+                      title: Text('Create a word set'),
+                    ),
+                  ),
+                  const Divider(),
+                  InkWell(
+                    onTap: () {
+                      if (kDebugMode) {
+                        print('Create folder set clicked');
+                      }
+                    },
+                    child: const ListTile(
+                      leading: Icon(Icons.folder_outlined),
+                      title: Text('Create a folder'),
+                    ),
+                  ),
+                ],
+              ),
             );
           });
     } else {
@@ -58,7 +85,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
           const BottomNavigationBarItem(icon: Icon(Icons.list), label: "Lists"),
           BottomNavigationBarItem(
             icon: Container(
-              color: Colors.amber,
+              color: Colors.transparent,
               margin: const EdgeInsets.only(top: 10.0),
               child: const Icon(
                 Icons.add_circle_outline,
@@ -73,8 +100,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
               icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
         onTap: (i) => {_onItemTapped(i, context)},
         type: BottomNavigationBarType.fixed,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,6 +13,7 @@ import 'package:grese/features/auth/providers/auth_provider.dart';
 import 'package:grese/features/auth/providers/token_provider.dart';
 import 'package:grese/providers/firebase_app_provider.dart';
 import 'package:grese/providers/shared_pref_provider.dart';
+import 'package:grese/routes/routes.dart';
 import 'package:grese/screens/dashboard_screen.dart';
 import 'package:grese/screens/login_screen.dart';
 import 'package:json_theme/json_theme.dart';
@@ -28,8 +30,7 @@ void main() async {
 
   // Than we setup preferred orientations,
   // and only after it finished we run our app
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((value) {
     return runApp(ProviderScope(
       overrides: [
         firebaseAppProvider.overrideWithValue(firebaseApp),
@@ -44,14 +45,12 @@ class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key, required this.theme});
   final ThemeData theme;
 
-
   @override
   ConsumerState<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
-
-// try to autologin user data
+// try to auto-login user data
   @override
   void initState() {
     super.initState();
@@ -71,12 +70,32 @@ class _MyAppState extends ConsumerState<MyApp> {
     //   ),
     // );
 
-    var token = ref.watch(tokenProvider);
-
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: widget.theme,
-      home: token == null ? const LoginScreen() : const DashBoardScreen(),
+      routerConfig: router,
+      // home: const DeciderScreen(),
     );
+  }
+}
+
+class DeciderScreen extends ConsumerStatefulWidget {
+  const DeciderScreen({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _DeciderScreenState();
+}
+
+class _DeciderScreenState extends ConsumerState<DeciderScreen> {
+  @override
+  void initState() {
+    super.initState();
+    sleep(const Duration(seconds: 1));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var token = ref.watch(tokenProvider);
+    return token == null ? const LoginScreen() : const DashBoardScreen();
   }
 }
