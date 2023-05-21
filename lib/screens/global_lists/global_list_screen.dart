@@ -206,7 +206,7 @@ class ListCardWidget extends StatelessWidget {
             height: 8.0,
           ),
           Text(
-            "${listModel.name} asdf ${listModel.name} very long text",
+            listModel.name,
             style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 2,
             softWrap: true,

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:grese/routes/route_const.dart';
 import 'package:grese/screens/home_screen.dart';
 import 'package:grese/screens/lists_screen.dart';
 import 'package:grese/screens/my_lists_screen.dart';
@@ -13,8 +15,7 @@ class DashBoardScreen extends ConsumerStatefulWidget {
   const DashBoardScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _DashBoardScreenState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _DashBoardScreenState();
 }
 
 class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
@@ -39,6 +40,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                 children: [
                   InkWell(
                     onTap: () {
+                      context.pop(); // close current alert dialog
+                      context.pushNamed(createSetScreenKey);
                       if (kDebugMode) {
                         print('Create word set clicked');
                       }
@@ -71,8 +74,6 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,10 +95,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             ),
             label: "",
           ),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.list_sharp), label: "My lists"),
-          const BottomNavigationBarItem(
-              icon: Icon(Icons.person), label: "Profile"),
+          const BottomNavigationBarItem(icon: Icon(Icons.list_sharp), label: "My lists"),
+          const BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,
         showUnselectedLabels: true,
