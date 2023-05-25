@@ -228,7 +228,7 @@ class ListCardWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  "${listModel.user.username} asdf very long user name asdf asdf asdf",
+                  listModel.user.username,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey.shade700),
                   maxLines: 1,
                   softWrap: true,

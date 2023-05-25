@@ -32,8 +32,8 @@ class CreatedListItemModel {
   int id;
   int userId;
   String name;
-  dynamic url;
-  String words;
+  String? url;
+  String? words;
   int visibility;
   int status;
   DateTime cratedAt;

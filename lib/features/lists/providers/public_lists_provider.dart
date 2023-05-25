@@ -25,7 +25,7 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
     try {
       // set default query value
       _listMetaModel.page = 1;
-      _listMetaModel.order = 'asc';
+      _listMetaModel.order = 'desc';
       _listMetaModel.query = query;
       _ref.read(hasMOreStateProvider.notifier).state = true;
       _publicListsRepository.getLists(_listMetaModel).then((ListsResponse response) {
@@ -76,7 +76,7 @@ class PublicListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 }
 
 final listMetaStateProvider = StateProvider<ListMetaModel>((ref) {
-  return ListMetaModel(count: 0, id: 0, query: "", orderBy: "id", order: "asc", page: 1, perPage: 5);
+  return ListMetaModel(count: 0, id: 0, query: "", orderBy: "id", order: "asc", page: 1, perPage: 10);
 });
 
 final initStateProvider = StateProvider<bool>((ref) {

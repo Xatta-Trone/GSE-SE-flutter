@@ -5,7 +5,7 @@ import 'package:grese/features/lists-create/model/list_create_response_model.dar
 import 'package:grese/providers/dio/dio_provider.dart';
 
 abstract class ListCreateRepositoryInterface {
-  Future<ListCreatedResponseModel> createList(Map<String, String> listCreateData);
+  Future createList(Map<String, dynamic> listCreateData);
 }
 
 final listCreateRepositoryProvider = Provider<ListCreateRepository>((ref) {
@@ -20,15 +20,20 @@ class ListCreateRepository implements ListCreateRepositoryInterface {
   late final Dio dio;
 
   @override
-  Future<ListCreatedResponseModel> createList(Map<String, String> listCreateData) async {
+  Future createList(Map<String, dynamic> listCreateData) async {
     try {
       var res = await dio.post('/lists', data: listCreateData);
-      if (kDebugMode) {
-        print(res.data);
-      }
-      ListCreatedResponseModel responseModel = ListCreatedResponseModel.fromJson(res.data);
-      return responseModel;
+      // if (kDebugMode) {
+      //   print(res.data);
+      // }
+      // ListCreatedResponseModel responseModel = ListCreatedResponseModel.fromJson(res.data);
+      // return responseModel;
+      return res;
     } catch (e) {
+      if (kDebugMode) {
+        print('error in dio');
+        print(e.runtimeType);
+      }
       rethrow;
     }
   }

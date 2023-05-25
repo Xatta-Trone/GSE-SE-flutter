@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grese/features/auth/providers/auth_provider.dart';
 import 'package:grese/features/auth/providers/token_provider.dart';
 
 class AuthInterceptor extends Interceptor {
@@ -45,15 +46,15 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
-    if (kDebugMode) {
-      print("err=================");
-      print(err);
-      print(err.response?.statusCode);
-    }
-
+  
     if (err.response?.statusCode == 401) {
+      if (kDebugMode) {
+        print("err=================");
+        print(err);
+        print(err.response?.statusCode);
+      }
       // authController.setLogoutValues();
-
+      ref.read(currentUserProvider.notifier).logout();
       // Get.toNamed(homePage);
       return handler.next(err);
     }
