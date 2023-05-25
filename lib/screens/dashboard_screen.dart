@@ -83,7 +83,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          const BottomNavigationBarItem(icon: Icon(Icons.list), label: "Lists"),
+          const BottomNavigationBarItem(icon: Icon(Icons.travel_explore_outlined), label: "Public"),
           BottomNavigationBarItem(
             icon: Container(
               color: Colors.transparent,
@@ -95,7 +95,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
             ),
             label: "",
           ),
-          const BottomNavigationBarItem(icon: Icon(Icons.list_sharp), label: "My lists"),
+          const BottomNavigationBarItem(icon: Icon(Icons.vpn_lock_outlined), label: "My sets"),
           const BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
         currentIndex: _selectedIndex,
