@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:grese/features/folders-create/model/folder_create_model.dart';
 import 'package:grese/features/folders-create/providers/create_folder_provider.dart';
 import 'package:grese/mixins/debounce_mixin.dart';
 
@@ -21,7 +22,8 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
 
     // handle error and success state
     folderCreateStateNotifier.whenOrNull(
-      data: (String? data) {
+      // handle success state
+      data: (FolderCreateResponse? data) {
         if (kDebugMode) {
           print('data print');
           print(data);
@@ -33,7 +35,7 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
                 builder: (context) {
                   return AlertDialog(
                     title: const Text('Success'),
-                    content: Text(data.toString()),
+                    content: Text(data.message.toString()),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () {
@@ -74,7 +76,7 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
     );
 
     // loading state
-    bool _isLoading = folderCreateStateNotifier is AsyncLoading;
+    bool isLoading = folderCreateStateNotifier is AsyncLoading;
 
     // screen
     return Scaffold(
@@ -141,7 +143,7 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton(
-                          onPressed: _isLoading
+                          onPressed: isLoading
                               ? null
                               : () {
                                   if (_formKey.currentState?.validate() == true) {
@@ -151,8 +153,8 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Submit'),
-                              if (_isLoading) ...[
+                              const Text('Create folder'),
+                              if (isLoading) ...[
                                 const SizedBox(
                                   width: 20.0,
                                 ),

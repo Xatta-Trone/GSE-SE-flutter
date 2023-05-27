@@ -35,14 +35,14 @@ final createFolderFormStateProvider = StateProvider<CreateFolderFormState>((ref)
 });
 
 // stateNotifier for the actions
-final createFolderStateNotifierProvider = StateNotifierProvider<CreateFolderStateNotifier, AsyncValue<String?>>((ref) {
+final createFolderStateNotifierProvider = StateNotifierProvider<CreateFolderStateNotifier, AsyncValue<FolderCreateResponse?>>((ref) {
   CreateFolderFormState formState = ref.watch(createFolderFormStateProvider);
   FolderCreateRepository repository = ref.watch(folderCreateRepositoryProvider);
 
   return CreateFolderStateNotifier(ref, formState, repository);
 });
 
-class CreateFolderStateNotifier extends StateNotifier<AsyncValue<String?>> {
+class CreateFolderStateNotifier extends StateNotifier<AsyncValue<FolderCreateResponse?>> {
   CreateFolderStateNotifier(
     this._ref,
     this.form,
@@ -83,7 +83,7 @@ class CreateFolderStateNotifier extends StateNotifier<AsyncValue<String?>> {
         print(responseModel);
       }
 
-      state = AsyncValue.data(responseModel.message);
+      state = AsyncValue.data(responseModel);
       resetFormData();
     } catch (error) {
       if (error is DioError) {
