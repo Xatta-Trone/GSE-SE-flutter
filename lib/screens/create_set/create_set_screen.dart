@@ -79,7 +79,7 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create a new set'),
+        title: const Text('Create new set'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -93,28 +93,6 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        children: [
-                          const Text("Import from URL ?"),
-                          const Spacer(),
-                          Switch(
-                            value: ref.watch(createListFormStateProvider).isImport.value,
-                            onChanged: (value) {
-                              if (kDebugMode) {
-                                print(value);
-                              }
-                              // empty setState to rebuild the widget tree
-                              setState(() {});
-                              // update the form
-                              ref.read(createListNotifierProvider.notifier).toggleIsImportUrl();
-                            },
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'Import from quizlet.com/vocabulary.com/memrise.com \nJust paste the set/folder URL, we will do the heavy works.',
-                        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Colors.red),
-                      ),
                       if (ref.watch(createListFormStateProvider).isImport.value == false) ...[
                         TextFormField(
                           decoration: const InputDecoration(
@@ -144,7 +122,7 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
                         TextFormField(
                           decoration: const InputDecoration(
                             hintText: "banal,analogy, ambiguity",
-                            labelText: "Words (at least 5 words)",
+                            labelText: "Words (5 minimum)",
                             border: UnderlineInputBorder(),
                           ),
                           keyboardType: TextInputType.multiline,
@@ -171,7 +149,10 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
                       if (ref.watch(createListFormStateProvider).isImport.value == true) ...[
                         TextFormField(
                           decoration:
-                              const InputDecoration(hintText: "https://quizlet.com/saint1729/folders/gregmat/sets", labelText: "Set/Folder URL"),
+                              const InputDecoration(
+                            hintText: "https://quizlet.com/saint1729/folders/gregmat/sets",
+                            labelText: "Set/Folder URL",
+                          ),
                           keyboardType: TextInputType.url,
                           textInputAction: TextInputAction.next,
                           onChanged: (value) => handleDebounce(
@@ -205,14 +186,14 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
                             decoration: const InputDecoration(
                               labelText: "Visible to",
                             ),
-                            items: const <DropdownMenuItem>[
+                            items: <DropdownMenuItem>[
                               DropdownMenuItem(
-                                value: 1,
-                                child: Text('Everyone'),
+                                value: ListVisibilityEnum.public.value,
+                                child: const Text('Everyone'),
                               ),
                               DropdownMenuItem(
-                                value: 2,
-                                child: Text('Only me'),
+                                value: ListVisibilityEnum.private.value,
+                                child: const Text('Only me'),
                               )
                             ],
                             value: ref.watch(createListFormStateProvider).visibility.value,
@@ -243,7 +224,7 @@ class _CreateSetScreenState extends ConsumerState<CreateSetScreen> with Debounce
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Submit'),
+                              const Text('CREATE NEW SET'),
                               if (isLoading) ...[
                                 const SizedBox(
                                   width: 20.0,

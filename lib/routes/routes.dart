@@ -3,6 +3,7 @@ import 'package:grese/main.dart';
 import 'package:grese/screens/crate_folder/create_folder_screen.dart';
 import 'package:grese/screens/create_set/create_set_screen.dart';
 import 'package:grese/screens/dashboard_screen.dart';
+import 'package:grese/screens/import-form-url/import_from_url_screen.dart';
 
 import 'route_const.dart';
 
@@ -29,6 +30,11 @@ final GoRouter router = GoRouter(
       name: createFolderScreenKey,
       path: "/create-folder",
       builder: (context, state) => const CreateFolderScreen(),
+    ),
+    GoRoute(
+      name: importURLScreenKey,
+      path: "/import-url",
+      builder: (context, state) => const ImportFromUrlScreen(),
     ),
   ],
 );

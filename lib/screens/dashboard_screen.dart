@@ -65,6 +65,20 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                       title: Text('Create a folder'),
                     ),
                   ),
+                  const Divider(),
+                  InkWell(
+                    onTap: () {
+                      context.pop(); // close current alert dialog
+                      context.pushNamed(importURLScreenKey);
+                      if (kDebugMode) {
+                        print('Import url clicked');
+                      }
+                    },
+                    child: const ListTile(
+                      leading: Icon(Icons.link),
+                      title: Text('Import words'),
+                    ),
+                  ),
                 ],
               ),
             );

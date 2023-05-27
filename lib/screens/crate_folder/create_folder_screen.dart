@@ -153,7 +153,7 @@ class _CreateFolderScreenState extends ConsumerState<CreateFolderScreen> with De
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text('Create folder'),
+                              const Text('CREATE FOLDER'),
                               if (isLoading) ...[
                                 const SizedBox(
                                   width: 20.0,

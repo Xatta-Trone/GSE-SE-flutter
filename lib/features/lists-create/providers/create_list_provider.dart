@@ -13,6 +13,15 @@ class FieldModel {
   FieldModel({required this.value});
 }
 
+// enums for visibility
+enum ListVisibilityEnum {
+  public(1),
+  private(2);
+
+  const ListVisibilityEnum(this.value);
+  final int value;
+}
+
 // form state
 class CreateListFormState {
   FieldModel name;
@@ -33,7 +42,7 @@ class CreateListFormState {
         name: FieldModel(value: null),
         words: FieldModel(value: null),
         url: FieldModel(value: null),
-        visibility: FieldModel(value: 1),
+        visibility: FieldModel(value: ListVisibilityEnum.public.value),
         isImport: FieldModel(value: false),
       );
 }
@@ -43,7 +52,7 @@ final createListFormStateProvider = StateProvider<CreateListFormState>((ref) {
     name: FieldModel(value: null),
     words: FieldModel(value: null),
     url: FieldModel(value: null),
-    visibility: FieldModel(value: 1),
+    visibility: FieldModel(value: ListVisibilityEnum.public.value),
     isImport: FieldModel(value: false),
   );
 });
@@ -233,7 +242,7 @@ class CreateListNotifier extends StateNotifier<AsyncValue<String?>> {
     form.name = FieldModel(value: null);
     form.words = FieldModel(value: null);
     form.url = FieldModel(value: null);
-    form.visibility = FieldModel(value: 1);
+    form.visibility = FieldModel(value: ListVisibilityEnum.public.value);
     form.isImport = FieldModel(value: false);
     // form = CreateListFormState.emptyModel();
   }
