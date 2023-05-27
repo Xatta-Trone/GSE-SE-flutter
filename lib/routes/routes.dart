@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:grese/main.dart';
+import 'package:grese/screens/crate_folder/create_folder_screen.dart';
 import 'package:grese/screens/create_set/create_set_screen.dart';
 import 'package:grese/screens/dashboard_screen.dart';
 
@@ -23,6 +24,11 @@ final GoRouter router = GoRouter(
       name: createSetScreenKey,
       path: "/create-set",
       builder: (context, state) => const CreateSetScreen(),
-    )
+    ),
+    GoRoute(
+      name: createFolderScreenKey,
+      path: "/create-folder",
+      builder: (context, state) => const CreateFolderScreen(),
+    ),
   ],
 );

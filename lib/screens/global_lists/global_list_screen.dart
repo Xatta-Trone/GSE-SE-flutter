@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:grese/features/lists/model/list_response_model.dart';
 import 'package:grese/features/lists/providers/public_lists_provider.dart';
-import 'package:grese/mixins/debonce_mixin.dart';
+import 'package:grese/mixins/debounce_mixin.dart';
 import 'package:intl/intl.dart';
 
 class GlobalListScreen extends ConsumerStatefulWidget {

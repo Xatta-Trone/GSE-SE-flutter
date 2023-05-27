@@ -54,6 +54,8 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
                   const Divider(),
                   InkWell(
                     onTap: () {
+                      context.pop(); // close current alert dialog
+                      context.pushNamed(createFolderScreenKey);
                       if (kDebugMode) {
                         print('Create folder set clicked');
                       }

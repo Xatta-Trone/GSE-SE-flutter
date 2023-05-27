@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:grese/features/lists-create/providers/create_list_provider.dart';
-import 'package:grese/mixins/debonce_mixin.dart';
+import 'package:grese/mixins/debounce_mixin.dart';
 import 'package:grese/routes/route_const.dart';
 
 class CreateSetScreen extends ConsumerStatefulWidget {
