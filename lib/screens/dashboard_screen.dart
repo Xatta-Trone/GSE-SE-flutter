@@ -84,7 +84,7 @@ class _DashBoardScreenState extends ConsumerState<DashBoardScreen> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
-          const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          const BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: "Home"),
           const BottomNavigationBarItem(icon: Icon(Icons.travel_explore_outlined), label: "Public"),
           BottomNavigationBarItem(
             icon: Container(
