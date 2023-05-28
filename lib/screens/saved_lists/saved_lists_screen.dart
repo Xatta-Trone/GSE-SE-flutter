@@ -84,20 +84,21 @@ class _SavedListsScreenState extends ConsumerState<SavedListsScreen> with Deboun
                       ),
                       DropdownButtonHideUnderline(
                         child: DropdownButton(
-                            alignment: AlignmentDirectional.centerEnd,
+                            icon: const Icon(Icons.filter_list),
+                            alignment: AlignmentDirectional.center,
                             value: ref.watch(savedListMetaStateProvider).filter,
                             items: <DropdownMenuItem>[
                               DropdownMenuItem(
                                 value: SavedListsFilterQueryEnum.all.value,
-                                child: const Text('All'),
+                                child: const Text('all'),
                               ),
                               DropdownMenuItem(
                                 value: SavedListsFilterQueryEnum.created.value,
-                                child: const Text('Created'),
+                                child: const Text('created'),
                               ),
                               DropdownMenuItem(
                                 value: SavedListsFilterQueryEnum.saved.value,
-                                child: const Text('Saved'),
+                                child: const Text('saved'),
                               ),
                             ],
                             onChanged: (value) {
