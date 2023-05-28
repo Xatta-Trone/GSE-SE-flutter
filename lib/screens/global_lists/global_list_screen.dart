@@ -150,7 +150,9 @@ class _GlobalListScreenState extends ConsumerState<GlobalListScreen> {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
-              })),
+                  },
+                ),
+              ),
             ],
           ),
         ),

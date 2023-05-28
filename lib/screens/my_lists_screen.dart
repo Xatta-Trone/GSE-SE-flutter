@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/features/auth/providers/auth_provider.dart';
-import 'package:grese/features/auth/repository/auth_repository.dart';
-import 'package:grese/services/shared_pref_service.dart';
+import 'package:grese/screens/saved_folders/saved_folders_screen.dart';
+import 'package:grese/screens/saved_lists/saved_lists_screen.dart';
 
 class MyListsScreen extends StatefulWidget {
   const MyListsScreen({super.key});
@@ -27,49 +25,27 @@ class _MyListsScreenState extends State<MyListsScreen> with TickerProviderStateM
 
     return SafeArea(
       child: Column(
-      children: [
+        children: [
           TabBar(
             controller: _tabController,
+            labelColor: Theme.of(context).primaryColor,
             tabs: const [
-              Tab(icon: Icon(Icons.directions_car)),
-              Tab(icon: Icon(Icons.directions_transit)),
+              Tab(icon: Icon(Icons.view_day_outlined)),
+              Tab(icon: Icon(Icons.folder_outlined)),
             ],
-        ),
+          ),
           Expanded(
             child: TabBarView(
               controller: _tabController,
               children: const [
-                Icon(Icons.directions_car),
-                Icon(Icons.directions_transit),
+                SavedListsScreen(),
+                SavedFoldersScreen(),
               ],
             ),
-        )
-      ],
+          )
+        ],
       ),
     );
 
-    // SafeArea(
-    //   child: DefaultTabController(
-    //     length: 2,
-    //     child: Scaffold(
-    //       appBar: AppBar(
-    //         elevation: 1.0,
-    //         bottom: const TabBar(
-    //           tabs: [
-    //             Tab(icon: Icon(Icons.directions_car)),
-    //             Tab(icon: Icon(Icons.directions_transit)),
-    //           ],
-    //         ),
-    //         title: const Text('Tabs Demo'),
-    //       ),
-    //       body: const TabBarView(
-    //         children: [
-    //           Icon(Icons.directions_car),
-    //           Icon(Icons.directions_transit),
-    //         ],
-    //       ),
-    //     ),
-    //   ),
-    // );
   }
 }
