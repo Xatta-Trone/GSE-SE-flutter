@@ -1,35 +1,34 @@
-// enums for visibility
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:grese/features/lists/model/list_response_model.dart';
-import 'package:grese/features/saved-lists/model/saved_lists_reponse_model.dart';
-import 'package:grese/features/saved-lists/repository/saved_lists_repository.dart';
+import 'package:grese/features/folders/model/folder_response_model.dart';
+import 'package:grese/features/saved-folders/model/saved_folder_response_model.dart';
+import 'package:grese/features/saved-folders/repository/saved_folder_repository.dart';
 
-enum SavedListsFilterQueryEnum {
+enum SavedFoldersFilterQueryEnum {
   all("all"),
   saved("saved"),
   created("created");
 
-  const SavedListsFilterQueryEnum(this.value);
+  const SavedFoldersFilterQueryEnum(this.value);
   final String value;
 }
 
-final savedListsStateNotifierProvider = StateNotifierProvider<SavedListNotifier, AsyncValue<List<ListModel>>>((ref) {
-  SavedListsRepository repository = ref.watch(savedListsRepositoryProvider);
-  SavedListResponseMeta meta = ref.watch(savedListMetaStateProvider);
+final savedFoldersStateNotifierProvider = StateNotifierProvider<SavedFolderNotifier, AsyncValue<List<PublicFolderModel>>>((ref) {
+  SavedFoldersRepository repository = ref.watch(savedFoldersRepositoryProvider);
+  SavedFolderResponseMeta meta = ref.watch(savedFolderMetaStateProvider);
 
-  return SavedListNotifier(ref, repository, meta);
+  return SavedFolderNotifier(ref, repository, meta);
 });
 
 // create the change notifier state
-class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
-  SavedListNotifier(this._ref, this._repository, this._meta) : super(AsyncData(List<ListModel>.empty(growable: true)));
+class SavedFolderNotifier extends StateNotifier<AsyncValue<List<PublicFolderModel>>> {
+  SavedFolderNotifier(this._ref, this._repository, this._meta) : super(AsyncData(List<PublicFolderModel>.empty(growable: true)));
 
   late final Ref _ref;
-  late final SavedListsRepository _repository;
-  late final SavedListResponseMeta _meta;
-  final List<ListModel> _items = [];
+  late final SavedFoldersRepository _repository;
+  late final SavedFolderResponseMeta _meta;
+  final List<PublicFolderModel> _items = [];
 
   Future<void> getListItems({String query = ''}) async {
     // set the loading
@@ -40,24 +39,24 @@ class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
       _meta.page = 1;
       _meta.order = 'desc';
       _meta.query = query;
-      _ref.read(savedListMetaHasMoreStateProvider.notifier).state = true;
+      _ref.read(savedFolderMetaHasMoreStateProvider.notifier).state = true;
 
       var response = await _repository.index(_meta);
 
-      SavedListsResponseModel responseModel = SavedListsResponseModel.fromJson(response.data);
+      SavedFoldersResponseModel responseModel = SavedFoldersResponseModel.fromJson(response.data);
 
       if (kDebugMode) {
         print('response model');
         print(response.data);
-        print(responseModel);
+        print(responseModel.toJson());
       }
 
       clearData();
       updateData(responseModel.data);
 
       // check if this is the end of list
-      if (responseModel.data.length < _meta.perPage) {
-        _ref.read(savedListMetaHasMoreStateProvider.notifier).state = false;
+      if (responseModel.data.length <= _meta.perPage) {
+        _ref.read(savedFolderMetaHasMoreStateProvider.notifier).state = false;
       }
     } catch (error) {
       state = AsyncValue.error(error, StackTrace.current);
@@ -75,14 +74,14 @@ class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 
   Future<void> getNextPageItems() async {
     try {
-      if (_ref.read(savedListMetaHasMoreStateProvider.notifier).state == false) {
+      if (_ref.read(savedFolderMetaHasMoreStateProvider.notifier).state == false) {
         return;
       }
       // set the next page
       _meta.page++;
       var response = await _repository.index(_meta);
 
-      SavedListsResponseModel responseModel = SavedListsResponseModel.fromJson(response.data);
+      SavedFoldersResponseModel responseModel = SavedFoldersResponseModel.fromJson(response.data);
 
       if (kDebugMode) {
         print('response model');
@@ -92,9 +91,9 @@ class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 
       // check if this is the end of list
       if (responseModel.data.isEmpty) {
-        _ref.read(savedListMetaHasMoreStateProvider.notifier).state = false;
+        _ref.read(savedFolderMetaHasMoreStateProvider.notifier).state = false;
       } else {
-        _ref.read(savedListMetaHasMoreStateProvider.notifier).state = true;
+        _ref.read(savedFolderMetaHasMoreStateProvider.notifier).state = true;
         updateData(responseModel.data);
       }
     } catch (error) {
@@ -109,7 +108,7 @@ class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
     }
   }
 
-  void updateData(List<ListModel> items) {
+  void updateData(List<PublicFolderModel> items) {
     if (items.isEmpty) {
       state = AsyncValue.data(_items);
     } else {
@@ -124,11 +123,11 @@ class SavedListNotifier extends StateNotifier<AsyncValue<List<ListModel>>> {
 }
 
 // meta state
-final savedListMetaStateProvider = StateProvider<SavedListResponseMeta>((ref) {
-  return SavedListResponseMeta(
+final savedFolderMetaStateProvider = StateProvider<SavedFolderResponseMeta>((ref) {
+  return SavedFolderResponseMeta(
     count: 0,
     id: 0,
-    filter: SavedListsFilterQueryEnum.all.value,
+    filter: SavedFoldersFilterQueryEnum.all.value,
     order: 'desc',
     orderBy: 'id',
     page: 1,
@@ -138,10 +137,10 @@ final savedListMetaStateProvider = StateProvider<SavedListResponseMeta>((ref) {
   );
 });
 
-final savedListMetaInitStateProvider = StateProvider<bool>((ref) {
+final savedFolderMetaInitStateProvider = StateProvider<bool>((ref) {
   return false;
 });
 
-final savedListMetaHasMoreStateProvider = StateProvider<bool>((ref) {
+final savedFolderMetaHasMoreStateProvider = StateProvider<bool>((ref) {
   return true;
 });

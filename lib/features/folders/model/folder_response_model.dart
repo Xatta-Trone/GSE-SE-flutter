@@ -31,7 +31,7 @@ class PublicFoldersResponse {
 class PublicFolderModel {
   int id;
   int userId;
-  int listMetaId;
+  int? listMetaId;
   String name;
   String slug;
   int visibility;

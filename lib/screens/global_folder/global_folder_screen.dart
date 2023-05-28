@@ -196,7 +196,7 @@ class ListFolderWidget extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                "${model.listCount} lists",
+                "${model.listCount} list(s)",
                 style: Theme.of(context).textTheme.bodySmall!.copyWith(color: Colors.grey.shade700),
               )
             ],
@@ -205,7 +205,7 @@ class ListFolderWidget extends StatelessWidget {
             height: 8.0,
           ),
           Text(
-            "${model.name} asdf ${model.name} very long text",
+            model.name,
             style: Theme.of(context).textTheme.bodyLarge,
             maxLines: 2,
             softWrap: true,
@@ -227,7 +227,7 @@ class ListFolderWidget extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  "${model.user.username} asdf very long user name asdf asdf asdf",
+                  model.user.username,
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.grey.shade700),
                   maxLines: 1,
                   softWrap: true,
