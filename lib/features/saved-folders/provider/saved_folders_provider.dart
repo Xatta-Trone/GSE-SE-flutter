@@ -55,7 +55,7 @@ class SavedFolderNotifier extends StateNotifier<AsyncValue<List<PublicFolderMode
       updateData(responseModel.data);
 
       // check if this is the end of list
-      if (responseModel.data.length <= _meta.perPage) {
+      if (_meta.perPage >= responseModel.data.length) {
         _ref.read(savedFolderMetaHasMoreStateProvider.notifier).state = false;
       }
     } catch (error) {

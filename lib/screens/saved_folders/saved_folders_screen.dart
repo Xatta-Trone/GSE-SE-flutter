@@ -135,7 +135,7 @@ class _SavedListsScreenState extends ConsumerState<SavedFoldersScreen> with Debo
                         itemCount: data.length + 1,
                         itemBuilder: (context, i) {
                           if (i == data.length) {
-                            if (ref.watch(savedListMetaHasMoreStateProvider) == true) {
+                            if (ref.watch(savedFolderMetaHasMoreStateProvider) == true) {
                               return const Center(child: CircularProgressIndicator());
                             } else {
                               return const Padding(
