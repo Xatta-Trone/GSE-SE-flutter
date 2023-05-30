@@ -9,7 +9,7 @@ import 'package:grese/screens/global_folder/global_folder_screen.dart';
 
 class SavedFoldersScreen extends ConsumerStatefulWidget {
   const SavedFoldersScreen({super.key});
-
+  
   @override
   ConsumerState<SavedFoldersScreen> createState() => _SavedListsScreenState();
 }
